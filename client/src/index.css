@@ -1,6 +1,6 @@
 /* Define custom CSS variables for color values */
 :root {
-	--primary: #D81E5B;      /* Primary color*/ 
+	--primary: #D81E5B;      /* Primary color */
 	--secondary: #8A4EFC;    /* Secondary color */
 	--light: #EEE;           /* Light background color */
 	--light-alt: #61759b;    /* Alternative light color */
@@ -221,8 +221,8 @@ h4 {
 	color: var(--dark);
 }
 
-/* Styling for the 'Sort cars by Speed' button */
-.sort-cars-by-speed-button {
+/* Styling for the 'Sort cars by Speed' and 'Sort cars by Year of Manufacture' button */
+.sort-cars-button {
 	background-color: var(--primary);
 	font-size: 18px;
 	font-weight: 500;
@@ -234,6 +234,7 @@ h4 {
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 	margin-bottom: 18px;
+	margin-left: 10px;
 }
 
 /* Hover effect for the 'Sort cars by Speed' button */
@@ -243,6 +244,14 @@ h4 {
 
 /* Styling for car speed information */
 .car .speed {
+    font-size: 14px;
+    color: var(--light-alt);
+	margin-left: 10px;
+    margin-top: 4px;
+}
+
+/* Styling for manufacture year information */
+.car .manufacture-year {
     font-size: 14px;
     color: var(--light-alt);
 	margin-left: 10px;

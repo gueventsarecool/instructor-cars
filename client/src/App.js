@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 const api_base = 'http://localhost:3001';
 
 function App() {
-    // Initialize state variables for cars, popup, newCarName, and newSpeed
+    // Initialize state variables for cars, popup, newCarName, newSpeed, and newManufactureYear
 	const [cars, setCars] = useState([]);
 	const [popupActive, setPopupActive] = useState(false);
 	const [newCarName, setNewCarName] = useState("Default Car Name");
 	const [newSpeed, setNewSpeed] = useState("100");
+	const [newManufactureYear, setNewManufactureYear] = useState("2021");
 
     // Fetch cars from the API when the component mounts
 	useEffect(() => {
@@ -49,7 +50,8 @@ function App() {
 			},
 			body: JSON.stringify({
 				carName: newCarName,
-				speed: newSpeed
+				speed: newSpeed,
+				manufactureYear: newManufactureYear
 			})
 		}).then(res => res.json());
 
@@ -58,6 +60,7 @@ function App() {
 		setPopupActive(false);
 		setNewCarName("Default Car Name");
 		setNewSpeed("100");
+		setNewManufactureYear("2021");
 	};
 
     // Function to sort cars by speed
@@ -65,10 +68,20 @@ function App() {
 		try {
 			const sortedCars = await fetch(api_base + '/cars/sortCarsBySpeed')
 				.then(res => res.json());
-	
 			setCars(sortedCars);
 		} catch (err) {
 			console.error("Error sorting by speed: ", err);
+		}
+	};
+
+	// Function to sort cars by year of manufacture
+	const sortCarsByYearOfManufacture = async () => {
+		try {
+			const sortedCars = await fetch(api_base + '/cars/sortCarsByManufactureYear')
+				.then(res => res.json());
+			setCars(sortedCars);
+		} catch (err) {
+			console.error("Error sorting by year of manufacture: ", err);
 		}
 	};
 
@@ -86,7 +99,8 @@ function App() {
 			<h1>Car Inventory</h1>
 			<h4>Your cars</h4>
 
-			<button className="sort-cars-by-speed-button" onClick={sortCarsBySpeed}>Sort cars by Speed</button>
+			<button className="sort-cars-button" onClick={sortCarsBySpeed}>Sort cars by Speed</button>
+			<button className="sort-cars-button" onClick={sortCarsByYearOfManufacture}>Sort cars by Year of Manufacture</button>
 
 			<div className="cars">
 				{cars.length > 0 ? cars.map(car => (
@@ -96,6 +110,7 @@ function App() {
 						<div className="checkbox"></div>
 						<div className="text">{car.carName}</div>
 						<div className="speed">Speed: {car.speed}</div>
+						<div className="manufacture-year">Manufacture Year: {car.manufactureYear}</div>
 						<div className="delete-car" onClick={() => deleteCar(car._id)}>x</div>
 					</div>
 				)) : (
@@ -110,9 +125,14 @@ function App() {
 					<div className="closePopup" onClick={() => setPopupActive(false)}>X</div>
 					<div className="content">
 						<h3>Name of the car</h3>
-						<input type="text" className="add-car-input" onChange={e => setNewCarName(e.target.value)} value={newCarName} />
+						<input type="text" className="add-car-input" onChange={
+							e => setNewCarName(e.target.value)} value={newCarName} />
 						<h2>Speed (km/h)</h2>
-						<input type="text" className="add-car-input" onChange={e => setNewSpeed(e.target.value)} value={newSpeed} />
+						<input type="text" className="add-car-input" onChange={
+							e => setNewSpeed(e.target.value)} value={newSpeed} />
+						<h2>Manufacture Year</h2>
+						<input type="text" className="add-car-input" onChange={
+							e => setNewManufactureYear(e.target.value)} value={newManufactureYear} />
 						<div className="button" onClick={addCar}>New Car</div>
 					</div>
 				</div>

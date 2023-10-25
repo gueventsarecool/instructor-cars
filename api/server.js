@@ -30,7 +30,8 @@ app.get('/cars', async (req, res) => {
 app.post('/car/new', (req, res) => {
     const car = new Car({
         carName: req.body.carName,
-        speed: req.body.speed
+        speed: req.body.speed,
+        manufactureYear: req.body.manufactureYear
     });
     car.save();
     res.json(car);
@@ -40,6 +41,18 @@ app.post('/car/new', (req, res) => {
 app.delete('/car/delete/:id', async (req, res) => {
     const result = await Car.findByIdAndDelete(req.params.id);
     res.json(result);
+});
+
+// GET request to retrieve all cars sorted by speed in descending order
+app.get('/cars/sortCarsBySpeed', async (req, res) => {
+    const cars = await Car.find().sort('-speed'); // Sort by speed in descending order
+    res.json(cars);
+});
+
+// GET request to retrieve all cars sorted by year of manufacture in ascending order
+app.get('/cars/sortCarsByManufactureYear', async (req, res) => {
+    const cars = await Car.find().sort('manufactureYear'); // Sort by manufacture year in ascending order
+    res.json(cars);
 });
 
 // GET request to toggle the 'choose' property of a car by its ID
@@ -55,7 +68,8 @@ app.get('/car/choose/:id', async (req, res) => {
             car = new Car({
                 _id: carId, // Set the ID explicitly
                 carName: req.body.carName, // Use the data from the request body
-                speed: req.body.speed // Use the data from the request body
+                speed: req.body.speed, // Use the data from the request body
+                manufactureYear: req.body.manufactureYear // Use the data from the request body
             });
         }
 
@@ -68,12 +82,6 @@ app.get('/car/choose/:id', async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'An error occurred' });
     }
-});
-
-// GET request to retrieve all cars sorted by speed in descending order
-app.get('/cars/sortCarsBySpeed', async (req, res) => {
-    const cars = await Car.find().sort('-speed'); // Sort by speed in descending order
-    res.json(cars);
 });
 
 // Start the Express server on port 3001
